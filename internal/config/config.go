@@ -1,35 +1,17 @@
 package config
 
-import (
-	"flag"
-	"os"
-)
-
-type Flags struct {
+type Config struct {
 	RunAddress           string
 	DatabaseURI          string
 	AccrualSystemAddress string
 }
 
-func ParseFlags() *Flags {
+func NewConfig() *Config {
+	flags := ParseFlags()
 
-	var flags Flags
-
-	flag.StringVar(&flags.RunAddress, "a", "localhost:8080", "адрес и порт запуска сервиса")
-	flag.StringVar(&flags.DatabaseURI, "d", "", "адрес подключения к базе данных")
-	flag.StringVar(&flags.AccrualSystemAddress, "r", "", "адрес системы расчёта начислений")
-
-	if envRunAddress := os.Getenv("RUN_ADDRESS"); envRunAddress != "" {
-		flags.RunAddress = envRunAddress
+	return &Config{
+		RunAddress:           flags.RunAddress,
+		DatabaseURI:          flags.DatabaseURI,
+		AccrualSystemAddress: flags.AccrualSystemAddress,
 	}
-
-	if envDatabaseURI := os.Getenv("DATABASE_URI"); envDatabaseURI != "" {
-		flags.DatabaseURI = envDatabaseURI
-	}
-
-	if envAccrualSystemAddress := os.Getenv("ACCRUAL_SYSTEM_ADDRESS"); envAccrualSystemAddress != "" {
-		flags.AccrualSystemAddress = envAccrualSystemAddress
-	}
-
-	return &flags
 }
